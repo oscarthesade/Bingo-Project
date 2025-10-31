@@ -56,8 +56,11 @@ Full bingo (3 lines)      +50
 
 ## Contributors
 Clement Standaert
-Oscar @oscarthesade
-(Add the rest of your team here)
+Oscar Thiele
+Arthur Hennessy
+Max Goldenberg
+Luis Schaefer
+Nadim Bteish
 
 ## Future Improvements
 - Multiplayer support
