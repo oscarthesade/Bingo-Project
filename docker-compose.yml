@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  bingo-game:
+    build: ./bingo-game
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+    
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

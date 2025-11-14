@@ -13,6 +13,10 @@ def main():
 
     drawer = NumberDrawer()
     score = ScoreTracker()
+    
+    high_score = score.get_high_score()
+    if high_score > 0:
+        print(f"\nHigh Score: {high_score}")
 
     print("\nYour card:")
     print(card)
