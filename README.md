@@ -282,14 +282,3 @@ If port 6379 is already in use:
 - Luis Schaefer
 - Nadim Bteish
 
-## Future Improvements
-- Multiplayer support
-- Saving game history to CSV
-- Colorized terminal interface (rich / colorama)
-- Automated tests with pytest
-- Docker Swarm orchestration
-- Kubernetes deployment manifests
-
----
-
-"Luck is when preparation meets opportunity — so prepare your card 😉"
