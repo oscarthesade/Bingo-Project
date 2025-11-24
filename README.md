@@ -75,8 +75,12 @@ cd Bingo-Project
 ```bash
 docker compose up
 ```
+In a new terminal run:
+```bash
+docker compose exec -it bingo-game python main.py
+```
 
-This command will:
+These commands will:
 - Build the Bingo game Docker image
 - Start Redis service with persistent storage
 - Create a custom Docker network
