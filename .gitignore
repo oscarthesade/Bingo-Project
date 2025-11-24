@@ -45,3 +45,14 @@ ENV/
 Thumbs.db
 
 *.ipynb
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.coverage.*
+coverage.xml
+junit.xml
+.tox/
+.hypothesis/
+.pytest_cache/
