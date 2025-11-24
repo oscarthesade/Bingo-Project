@@ -38,6 +38,13 @@ Bingo-Project/
 │       └── ui/
 │           └── terminal.py # Terminal input/output
 └── tests/                  # Unit tests
+    ├── conftest.py         # Pytest configuration and fixtures
+    ├── requirements.txt    # Test dependencies
+    ├── README.md           # Test documentation
+    ├── test_card.py        # Card module tests
+    ├── test_check.py       # Check module tests
+    ├── test_draw.py        # Draw module tests
+    └── test_score.py       # Score module tests
 ```
 
 ## Docker Architecture
