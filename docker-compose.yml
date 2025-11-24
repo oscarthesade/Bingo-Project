@@ -1,14 +1,55 @@
-version: '3.8'
+# Define custom network for service communication
+networks:
+  bingo-network:
+    driver: bridge
+
+# Define volumes for data persistence
+volumes:
+  redis-data:
+    driver: local
 
 services:
-  bingo-game:
-    build: ./bingo-game
-    depends_on:
-      - redis
-    stdin_open: true
-    tty: true
-    
+  # Redis service for storing game history and high scores
   redis:
     image: redis:alpine
+    container_name: bingo-redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - bingo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  # Bingo game application
+  bingo-game:
+    build:
+      context: ./bingo-game
+      dockerfile: Dockerfile
+    container_name: bingo-app
+    depends_on:
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    networks:
+      - bingo-network
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s

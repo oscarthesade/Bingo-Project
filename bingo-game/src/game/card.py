@@ -12,6 +12,9 @@ class BingoCard:
         self.marked = [[False] * self.cols for _ in range(self.rows)]
 
     def build_from_numbers(self, numbers):
+        """Build card from a list of numbers."""
+        if len(numbers) != self.rows * self.cols:
+            raise ValueError(f"Expected {self.rows * self.cols} numbers, got {len(numbers)}")
         card = []
         for i in range(self.rows):
             row = numbers[i * self.cols:(i + 1) * self.cols]

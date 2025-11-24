@@ -1,6 +1,7 @@
 # src/game/score.py
 import redis
 import json
+import os
 from datetime import datetime
 
 LINE_POINTS = 10
@@ -11,10 +12,26 @@ class ScoreTracker:
         self.score = 0
         self.lines_done = 0
         self.has_bingo = False
+        
+        # Get Redis configuration from environment variables
+        redis_host = os.getenv('REDIS_HOST', 'redis')
+        redis_port = int(os.getenv('REDIS_PORT', 6379))
+        
+        # Attempt to connect to Redis
         try:
-            self.redis_client = redis.Redis(host='redis', port=6379, decode_responses=True)
-        except:
+            self.redis_client = redis.Redis(
+                host=redis_host,
+                port=redis_port,
+                decode_responses=True,
+                socket_connect_timeout=5
+            )
+            # Test connection
+            self.redis_client.ping()
+        except (redis.ConnectionError, redis.TimeoutError, Exception) as e:
+            # Gracefully handle Redis unavailability
             self.redis_client = None
+            if os.getenv('DEBUG', 'false').lower() == 'true':
+                print(f"Redis connection failed: {e}. Running without persistence.")
 
     def update_score(self, marked):
         """Update the player's score based on new lines or bingo."""
@@ -47,8 +64,10 @@ class ScoreTracker:
                 current_high = self.redis_client.get('high_score')
                 if not current_high or int(current_high) < self.score:
                     self.redis_client.set('high_score', self.score)
-            except:
-                pass
+            except (redis.ConnectionError, redis.TimeoutError, Exception) as e:
+                # Silently fail if Redis is unavailable
+                if os.getenv('DEBUG', 'false').lower() == 'true':
+                    print(f"Failed to save game result: {e}")
 
     def get_score(self):
         return self.score
@@ -57,7 +76,8 @@ class ScoreTracker:
         """Get high score from Redis."""
         if self.redis_client:
             try:
-                return int(self.redis_client.get('high_score') or 0)
-            except:
+                high_score = self.redis_client.get('high_score')
+                return int(high_score) if high_score else 0
+            except (redis.ConnectionError, redis.TimeoutError, ValueError, Exception):
                 return 0
         return 0
