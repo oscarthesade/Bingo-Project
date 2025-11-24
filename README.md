@@ -23,6 +23,12 @@ Developed as part of the **Project Session 2** assignment.
 
 ```
 Bingo-Project/
+├── README.md               # Project documentation
+├── ARCHITECTURE.md         # Architecture documentation
+├── DOCKER.md               # Docker setup and usage
+├── TESTING.md              # Testing documentation
+├── Makefile                # Build and test automation
+├── pytest.ini              # Pytest configuration
 ├── docker-compose.yml      # Multi-service Docker configuration
 ├── bingo-game/
 │   ├── Dockerfile          # Docker image definition
